@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86" height="21" viewBox="0 0 86 21">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Retângulo_1" data-name="Retângulo 1" width="86" height="21" transform="translate(-4246 3940)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Grupo_de_máscara_1" data-name="Grupo de máscara 1" transform="translate(4246 -3940)" clip-path="url(#clip-path)">
+    <text id="Loom." transform="translate(-4202 3960)" fill="#fff" font-size="25" font-family="Inter18pt-Black, 'Inter \31 8pt \31 8pt'" font-weight="800"><tspan x="-43.939" y="0">LOOM</tspan><tspan y="0" font-size="35">.</tspan></text>
+  </g>
+</svg>

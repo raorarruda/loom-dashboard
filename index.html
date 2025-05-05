@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loom Dashboard</title>
+    <link rel="stylesheet" href="./dist/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-brand-50">
+    <header class="bg-brand-500 flex items-center justify-between px-9">
+        <div>
+            <a href="index.html">
+                <img src="images/logo-loom-white.svg" alt="LOOM. White Logo"></a>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="border-x p-6">
+                <a href="#">
+                    <img src="images/notification.svg" alt="Notification Icon" class="cursor-pointer">
+                </a>
+            </div>       
+            <div class="flex gap-2 items-center">
+                <img src="images/pic.svg" alt="User Profile Picture">
+                <div>
+                    <p class="font-inter text-sm text-brand-50">Karima Abd El-Hamid</p>
+                    <p class="font-inter font-bold text-xs text-brand-50">Admin</p>
+                </div>
+            </div>
+            <a href="#" class="cursor-pointer pl-2"><img src="images/sort-down.svg" alt="Sort Down Icon">
+            </a>
+        </div>
+    </header>
+        <div class="grid grid-cols-[auto_1fr]">
+            <nav class="bg-white flex flex-grow h-dvh size-fit shadow-xl">
+                <ul class="flex flex-col px-9 text-neutral-950">
+                    <li>
+                        <a class="flex gap-4 pt-10 pb-5 font-bold">
+                            <img src="images/icon-sidebar-dashboard.svg" alt="Dashboard Icon">Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 py-5">
+                            <img src="images/icon-sidebar-teams.svg" alt="Teams Icon">Teams</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 py-5">
+                            <img src="images/icon-sidebar-customers.svg" alt="Customers Icon">Customers</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 py-5">
+                            <img src="images/icon-sidebar-merchants.svg" alt="Merchants Icon">Merchants</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 py-5">
+                            <img src="images/icon-sidebar-content.svg" alt="Content Icon">Content</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 py-5">
+                            <img src="images/icon-sidebar-campaigns.svg" alt="Campaigns Icon">Campaigns</a>
+                    </li>
+                    <li>
+                        <a class="flex gap-4 pt-5 pb-10">
+                            <img src="images/icon-sidebar-actionlog.svg" alt="Action Log Icon">Action Log</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="flex flex-col gap-10 px-14 pt-7">
+                <section class="flex flex-col gap-8 text-neutral-950">
+                    <div>
+                        <p class="font-bold text-4xl pb-2">Dashboard</p>
+                        <p class="text-sm text-neutral-600">Here is what have changed since your last visit at 12 Novenber 2018 - 12:00 PM</p>
+                    </div>
+                        <div class="grid grid-cols-4 gap-8">
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-4xl pb-2">13,000</p>
+                                <p>Deo Subscriptions</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-4xl pb-2">40M</p>
+                                <p>Morgan de pays</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-4xl pb-2">12</p>
+                                <p>Approved services</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-4xl pb-2">3</p>
+                                <p>Approved products</p>
+                            </div>
+                        </div>
+                </section>
+                <section class="flex flex-col gap-2 text-neutral-950">
+                    <div>
+                        <p class="font-bold text-neutral-600 text-2xl pb-2">Operators</p>
+                    </div>
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-lg font-medium">All Subscribers</p>
+                                <canvas id="allSubscribersChart"></canvas>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-lg font-medium">R-Mobile Subscribers</p>
+                                <canvas id="rMobileSubscribersChart"></canvas>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-lg font-medium">Morgan Subscribers</p>
+                                <canvas id="morganSubscribersChart"></canvas>
+                            </div>
+                        </div>
+                </section>
+                <section class="flex flex-col gap-2 text-neutral-950">
+                    <div>
+                        <p class="font-bold text-neutral-600 text-2xl pb-2">Merchants</p>
+                    </div>
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="bg-white p-6 rounded-lg shadow-lg col-span-2">
+                                <p class="text-lg font-medium">Merchant name</p>
+                                <canvas id="merchantChart" class="p-6" height="100"></canvas>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <p class="text-lg font-medium">Monthly Goal</p>
+                                <canvas id="totalMerchantProgressChart"></canvas>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </div>
+    <script type="module" src="./src/index.js"></script>
+</html> 

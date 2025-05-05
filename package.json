@@ -1,0 +1,23 @@
+{
+  "name": "loom-dashboard",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.3.4"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.9",
+    "chartjs-plugin-datalabels": "^2.2.0"
+  }
+}

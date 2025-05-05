@@ -1,0 +1,10 @@
+<svg id="column-with-rows-content-layout" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+  <rect id="Rectangle-path" width="5.519" height="12.143" transform="translate(2.429 2.429)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-2" data-name="Rectangle-path" width="5.519" height="1.37" transform="translate(9.052 2.429)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-3" data-name="Rectangle-path" width="5.519" height="1.375" transform="translate(9.052 4.581)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-4" data-name="Rectangle-path" width="5.519" height="1.369" transform="translate(9.052 6.739)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-5" data-name="Rectangle-path" width="5.519" height="1.369" transform="translate(9.052 8.892)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-6" data-name="Rectangle-path" width="5.519" height="1.374" transform="translate(9.052 11.045)" fill="#7d86a9"/>
+  <rect id="Rectangle-path-7" data-name="Rectangle-path" width="5.519" height="1.37" transform="translate(9.052 13.202)" fill="#7d86a9"/>
+  <path id="Shape" d="M0,17V0H17V17Z" fill="#7d86a9"/>
+</svg>
