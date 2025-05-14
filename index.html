@@ -72,7 +72,7 @@
                         <p class="font-bold text-4xl pb-2">Dashboard</p>
                         <p class="text-sm text-neutral-600">Here is what have changed since your last visit at 12 Novenber 2018 - 12:00 PM</p>
                     </div>
-                        <div class="grid grid-cols-4 gap-8">
+                        <div class="grid grid-cols-4 gap-8 h-[110px]">
                             <div class="bg-white p-6 rounded-lg shadow-lg">
                                 <p class="text-4xl pb-2">13,000</p>
                                 <p>Deo Subscriptions</p>
@@ -116,13 +116,22 @@
                         <p class="font-bold text-neutral-600 text-2xl pb-2">Merchants</p>
                     </div>
                         <div class="grid grid-cols-3 gap-8">
-                            <div class="bg-white p-6 rounded-lg shadow-lg col-span-2">
+                            <div class="bg-white p-6 rounded-lg shadow-lg col-span-2 relative w-full min-w-xs max-h-96 overflow-visible">
                                 <p class="text-lg font-medium">Merchant name</p>
-                                <canvas id="merchantChart" class="p-6" height="100"></canvas>
+                                <canvas id="merchantChart" class="block h-auto w-full" ></canvas>
                             </div>
-                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="bg-white p-6 rounded-lg shadow-lg h-[220px] mx-auto">
                                 <p class="text-lg font-medium">Monthly Goal</p>
-                                <canvas id="totalMerchantProgressChart"></canvas>
+                                <div class="flex justify-between items-center gap-8 h-[220px]">
+                                    <div class="flex flex-col justify-center text-neutral-600 pt-2">
+                                        <p class="font-bold text-sm">Accomplished</p>
+                                        <p class="text-xs">200,000 Euro</p>
+                                        <p class="font-bold text-sm">Remaining</p>
+                                        <p class="text-xs">20,000 Euro</p>
+                                    </div>
+                                    <canvas id="totalMerchantProgressChart" class="h-[180px] w-[180px] pt-2"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                 </section>

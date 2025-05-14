@@ -14,10 +14,10 @@ const dashboardData = {
     morganSubscribers: 105
   },
   merchants: [
-    { name: "Mercado Bom Preço", monthlyGoal: 5000, accomplished: 4200 },
-    { name: "Loja da Maria", monthlyGoal: 3200, accomplished: 3500 },
-    { name: "Supermercado União", monthlyGoal: 7800, accomplished: 6500 },
-    { name: "Hortifruti Natural", monthlyGoal: 2500, accomplished: 2800 }
+    { name: "Pay Market", monthlyGoal: 5000, accomplished: 4200 },
+    { name: "Mary's Shop", monthlyGoal: 3200, accomplished: 3500 },
+    { name: "Uni Market", monthlyGoal: 7800, accomplished: 6500 },
+    { name: "Natural Food", monthlyGoal: 2500, accomplished: 2800 }
   ]
 };
 
@@ -60,6 +60,19 @@ function updateStatCards() {
 
 function renderBarChart(ctxId, labels, data) {
   const ctx = document.getElementById(ctxId).getContext('2d');
+  
+  const barHeight = 6;
+  const barSpacing = 10;
+  const minHeight = 300;
+  const maxHeight = 220;
+
+  const calculatedHeight = labels.length * (barHeight + barSpacing) + 100;
+  const chartHeight = Math.min(Math.max(calculatedHeight, minHeight), maxHeight);
+
+  const container = document.getElementById(ctxId).parentElement;
+  container.style.height = `${chartHeight}px`;
+  container.style.overflow = 'visible';
+
   return new Chart(ctx, {
     type: 'bar',
     data: {
@@ -67,48 +80,78 @@ function renderBarChart(ctxId, labels, data) {
       datasets: [{
         label: 'Monthly Goal',
         data,
-        backgroundColor: '#3B82F6',
-        borderRadius: 6
+        backgroundColor: '#1676FF',
+        borderRadius: {
+          topLeft: 10,
+          topRight: 10,
+          bottomLeft: 10,
+          bottomRight: 10
+        },
+        barThickness: barHeight,
       }]
     },
     options: {
       indexAxis: 'y',
       responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
-    }
-  });
-}
-
-function renderDoughnutChart(ctxId, accomplished, goal) {
-  const ctx = document.getElementById(ctxId).getContext('2d');
-  const achieved = (accomplished / goal) * 100;
-  const remaining = Math.max(0, 100 - achieved);
-
-  return new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Achieved', 'Remainder'],
-      datasets: [{
-        data: [achieved, remaining],
-        backgroundColor: ['#16A34A', '#DC2626'],
-        hoverOffset: 4,
-        borderWidth: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      cutout: '70%',
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => `${ctx.label}: ${ctx.parsed.toFixed(1)}%`
+        datalabels: {
+          anchor: 'end',   
+          align: 'right',
+          offset: 5,
+          color: '#5B6591',
+          font: { 
+            weight: 'bold',
+            size: 12
+          },
+          formatter: function(value) {
+            return value.toString().length > 6 ? value.toExponential(2) : value;
+          }
+        }
+      },
+      scales: {
+        y: {
+          position: 'left',
+          ticks: {
+            display: true,
+            padding: 0,
+            crossAlign: 'far',
+            mirror: false,
+            font: {
+              size: 14,
+              color: '#5B6591',
+            }
+          },
+          grid: { display: false },
+          border: { display: false },
+          afterFit: function(scale) {
+            scale.paddingTop = 0;
+            scale.paddingBottom = 0;
+            scale.width = 120;
           }
         },
-        datalabels: {
-          color: '#fff',
-          formatter: value => `${value.toFixed(1)}%`
+        x: {
+          ticks: { display: false },
+          grid: { display: false },
+          border: { display: false },
+          afterFit: function(scale) {
+            scale.paddingRight = 50;
+          },
+        }
+      },
+      layout: {
+        padding: {
+          left: 0,
+          right: 50,
+          top: 20,
+          bottom: 20
+        }
+      },
+      elements: {
+        bar: {
+          borderSkipped: 'false',
+          borderWidth: 0,
         }
       }
     },
@@ -116,12 +159,107 @@ function renderDoughnutChart(ctxId, accomplished, goal) {
   });
 }
 
+const centerPercentagePlugin = {
+  id: 'centerPercentage',
+  afterDraw: (chart, args, options) => {
+    const { ctx, chartArea: { width, height } } = chart;
+    const achievedPercentage = chart.config.data.datasets[0].data[0];
+    const percentageText = `${achievedPercentage}%`;
+    const completedText = 'Completed';
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    ctx.save();
+
+    // percentage
+    ctx.font = '20px sans-serif';
+    ctx.fillStyle = '#181E51';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(percentageText, centerX, centerY - 10);
+
+    // completed
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#5B6591';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(completedText, centerX, centerY + 10);
+
+    ctx.restore();
+  }
+};
+
+function renderDoughnutChart(ctxId, accomplished, goal) {
+  const canvas = document.getElementById(ctxId);
+  const container = canvas.parentElement;
+  
+  container.style.position = 'relative';
+  container.style.overflow = 'visible'; // Alterado para visible
+  container.style.width = '120px'; // Largura igual à altura para manter círculo perfeito
+  container.style.height = '120px';
+  
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  const ctx = canvas.getContext('2d');
+  const achievedPercentage = ((accomplished / goal) * 100).toFixed(1);
+  const remaining = Math.max(0, 100 - achievedPercentage);
+
+  return new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Achieved', 'Remainder'],
+      datasets: [{
+        data: [achievedPercentage, remaining],
+        backgroundColor: ['#1676FF', '#DCE3F6'],
+        hoverOffset: 4,
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: false, // Alterado para false para controle absoluto
+      maintainAspectRatio: false,
+      cutout: '95%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+        datalabels: { display: false }
+      },
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      }
+    },
+    plugins: [centerPercentagePlugin]
+  });
+}
+
 function renderLineChart(ctxId, labels, data, color) {
-  const ctx = document.getElementById(ctxId).getContext('2d');
+  const canvas = document.getElementById(ctxId);
+  const container = canvas.parentElement;
+  
+  container.style.position = 'relative';
+  container.style.overflow = 'hidden';
+  container.style.width = '100%';
+  container.style.maxWidth = '600px';
+  container.style.maxHeight = '220px';
+  
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  const ctx = canvas.getContext('2d');
   if (chartInstances[ctxId]) chartInstances[ctxId].destroy();
   
   const gradientStart = 0.6;
-  const gradientEnd = 0.9;
+  const gradientEnd = 0.8;
   
   const gradient = ctx.createLinearGradient(
     0, 
@@ -153,6 +291,7 @@ function renderLineChart(ctxId, labels, data, color) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false, // Crucial para o controle de tamanho
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
@@ -165,22 +304,41 @@ function renderLineChart(ctxId, labels, data, color) {
         }
       },
       scales: {
-        y: {  display: false,
+        y: {  
+          display: false,
           beginAtZero: false,
           grid: { display: false },
           border: { display: false },
           grace: '5%',
-          suggestedMax: Math.max(...data) * 1.1 },
-        x: { ticks: { 
-          display: true,
-          color: '#7D86A9' }, 
-          grid: { display: false }, border: { display: false } }
+          suggestedMax: Math.max(...data) * 1.1 
+        },
+        x: { 
+          ticks: { 
+            display: true,
+            color: '#5B6591',
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 10
+          }, 
+          grid: { display: false }, 
+          border: { display: false } 
+        }
       },
+      // Ajuste para evitar vazamento
+      layout: {
+        padding: {
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 20
+        }
+      }
     },
     plugins: [ChartDataLabels]
   });
 }
 
+//filtro dia, mes, ano
 function addChartSwitchListeners(baseId, dataKey, color) {
   ['daily', 'weekly', 'monthly', 'yearly'].forEach(period => {
     document.getElementById(`${period}${baseId}`)?.addEventListener('click', () => {
