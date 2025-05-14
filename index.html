@@ -96,10 +96,22 @@
                         <p class="font-bold text-neutral-600 text-2xl pb-2">Operators</p>
                     </div>
                         <div class="grid grid-cols-3 gap-8">
-                            <div class="bg-white p-6 rounded-lg shadow-lg">
-                                <p class="text-lg font-medium">All Subscribers</p>
-                                <div></div>
-                                <canvas id="allSubscribersChart"></canvas>
+                            <div class="bg-white p-6 rounded-lg shadow-lg relative">
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-lg font-medium">All Subscribers</p>
+                                    <div class="relative">
+                                        <button class="filter-toggle p-1 rounded hover:bg-gray-100" data-chart="allSubscribersChart">
+                                            <img src="images/menuFilter.svg" alt="Filter menu" class="w-5 h-5">
+                                        </button>
+                                        <div class="filter-menu absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50 border border-gray-200 hidden">
+                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="daily">Daily</button>
+                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="weekly">Weekly</button>
+                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="monthly">Monthly</button>
+                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="yearly">Yearly</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <canvas id="allSubscribersChart" class="w-full h-[300px]"></canvas>
                             </div>
                             <div class="bg-white p-6 rounded-lg shadow-lg">
                                 <p class="text-lg font-medium">R-Mobile Subscribers</p>
@@ -120,22 +132,31 @@
                                 <p class="text-lg font-medium">Merchant name</p>
                                 <canvas id="merchantChart" class="block h-auto w-full" ></canvas>
                             </div>
-                            <div class="bg-white p-6 rounded-lg shadow-lg h-[220px] mx-auto">
+                        <div class="bg-white p-6 rounded-lg shadow-lg h-[220px] flex flex-col">
+                            <div>
                                 <p class="text-lg font-medium">Monthly Goal</p>
-                                <div class="flex justify-between items-center gap-8 h-[220px]">
-                                    <div class="flex flex-col justify-center text-neutral-600 pt-2">
+                                <p id="totalMonthlyGoal" class="text-xs text-neutral-600">Valor total</p>
+                            </div>
+                            <div class="flex justify-between items-center gap-8 flex-grow">
+                                <div class="flex flex-col justify-center text-neutral-600 h-full pl-2">
+                                    <div>
                                         <p class="font-bold text-sm">Accomplished</p>
-                                        <p class="text-xs">200,000 Euro</p>
+                                        <p id="valueAccomplished" class="text-xs">200,000 Euro</p>
+                                    </div>
+                                    <div class="pt-2">
                                         <p class="font-bold text-sm">Remaining</p>
-                                        <p class="text-xs">20,000 Euro</p>
+                                        <p id="valueRemaining" class="text-xs">20,000 Euro</p>
                                     </div>
-                                    <canvas id="totalMerchantProgressChart" class="h-[180px] w-[180px] pt-2"></canvas>
-                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center h-full">
+                                    <canvas id="totalMerchantProgressChart" class="h-[120px] w-[120px]"></canvas>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </section>
             </div>
-        </div>
+        </div> 
+    <script type="module" src="./src/utils.js"></script>   
     <script type="module" src="./src/index.js"></script>
 </html> 

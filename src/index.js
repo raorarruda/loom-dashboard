@@ -1,3 +1,4 @@
+import { formatNumber } from './utils';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
@@ -50,12 +51,85 @@ const evolutionData = {
 
 let chartInstances = {};
 
+function initFilterMenus(){
+  document.querySelectorAll(".filter-toggle").forEach(button => {
+    button.addEventListener("click", function(e){
+      e.stopPropagation();
+      const menu = button.nextElementSibling;
+
+      document.querySelectorAll(".filter-menu").forEach(m =>{
+        if (m !== menu) m.classList.add("hidden");
+      });
+
+      menu.classList.toggle("hidden");
+    });
+  });
+
+  document.addEventListener("click", function(){
+    document.querySelectorAll(".filter-menu").forEach(menu => {
+      menu.classList.add("hidden");
+    });
+  });
+
+  document.querySelectorAll(".filter-menu").forEach(menu => {
+    menu.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+  });
+
+  setupChartFilter("allSubscribersChart", "all");
+}
+
+function setupChartFilter(chartId, dataKey){
+  const options = document.querySelectorAll(`[data-chart="${chartId}"] + .filter-menu .filter-option`);
+
+  options.forEach(option => {
+    option.addEventListener("click", function(){
+      const period = this.getAttribute('data-period');
+      updateChartWithPeriod(chartId, dataKey, period);
+
+      this.closest(".filter-menu").classList.add("hidden");
+
+      updateActiveFilterStyle(this);
+
+    });
+  });
+}
+
+function updateActiveFilterStyle(selectedOption){
+  selectedOption.closest(".filter-menu").querySelectorAll(".filter-option").forEach(opt =>{
+    opt.classList.remove("bg-gray-100', 'font-medium");
+  });
+
+  selectedOption.classList.add("bg-gray-100', 'font-medium");
+}
+
+function updateChartWithPeriod(chartId, dataKey, period){
+  const labels = evolutionData.labels[period];
+  const data = evolutionData[dataKey][period];
+  const color = '#1676FF';
+
+  if (chartInstances[chartId]) {
+        chartInstances[chartId].destroy();
+    }
+
+    chartInstances[chartId] = renderLineChart(chartId, labels, data, color);
+}
+
 function updateStatCards() {
   const statCards = document.querySelectorAll(".grid-cols-4 > div");
-  statCards[0].querySelector("p").textContent = (dashboardData.subscriptions.deo + dashboardData.subscriptions.morgan).toLocaleString();
+  statCards[0].querySelector("p").textContent = `${formatNumber(dashboardData.subscriptions.deo + dashboardData.subscriptions.morgan)}`;
   statCards[1].querySelector("p").textContent = dashboardData.payments;
-  statCards[2].querySelector("p").textContent = dashboardData.services.approved.toLocaleString();
-  statCards[3].querySelector("p").textContent = dashboardData.products.approved.toLocaleString();
+  statCards[2].querySelector("p").textContent = `${formatNumber(dashboardData.services.approved)}`;
+  statCards[3].querySelector("p").textContent = `${formatNumber(dashboardData.products.approved)}`;
+
+  const totalGoal = dashboardData.merchants.reduce((sum, m) => sum + m.monthlyGoal, 0);
+  const totalAccomplished = dashboardData.merchants.reduce((sum, m)=> sum + m.accomplished, 0);
+  const totalRemaining = Math.max(0, totalGoal - totalAccomplished);
+
+  document.getElementById("totalMonthlyGoal").textContent = `$${formatNumber(totalGoal)}`;
+  document.getElementById("valueAccomplished").textContent = `$${formatNumber(totalAccomplished)}`;
+  document.getElementById("valueRemaining").textContent = `$${formatNumber(totalAccomplished)}`;
 }
 
 function renderBarChart(ctxId, labels, data) {
@@ -106,7 +180,7 @@ function renderBarChart(ctxId, labels, data) {
             size: 12
           },
           formatter: function(value) {
-            return value.toString().length > 6 ? value.toExponential(2) : value;
+            return `$${formatNumber(value)}`;
           }
         }
       },
@@ -194,9 +268,9 @@ function renderDoughnutChart(ctxId, accomplished, goal) {
   const container = canvas.parentElement;
   
   container.style.position = 'relative';
-  container.style.overflow = 'visible'; // Alterado para visible
-  container.style.width = '120px'; // Largura igual à altura para manter círculo perfeito
-  container.style.height = '120px';
+  container.style.overflow = 'visible';
+  container.style.width = '130px';
+  container.style.height = '130px';
   
   canvas.style.width = '100%';
   canvas.style.height = '100%';
@@ -205,7 +279,7 @@ function renderDoughnutChart(ctxId, accomplished, goal) {
 
   const ctx = canvas.getContext('2d');
   const achievedPercentage = ((accomplished / goal) * 100).toFixed(1);
-  const remaining = Math.max(0, 100 - achievedPercentage);
+  const remaining = Math.max(0, 100 - parseFloat(achievedPercentage));
 
   return new Chart(ctx, {
     type: 'doughnut',
@@ -241,110 +315,99 @@ function renderDoughnutChart(ctxId, accomplished, goal) {
 }
 
 function renderLineChart(ctxId, labels, data, color) {
-  const canvas = document.getElementById(ctxId);
-  const container = canvas.parentElement;
-  
-  container.style.position = 'relative';
-  container.style.overflow = 'hidden';
-  container.style.width = '100%';
-  container.style.maxWidth = '600px';
-  container.style.maxHeight = '220px';
-  
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+    const canvas = document.getElementById(ctxId);
+    const container = canvas.parentElement;
+    
+    container.style.position = 'relative';
+    container.style.overflow = 'hidden';
+    container.style.width = '100%';
+    container.style.maxWidth = '600px';
+    container.style.maxHeight = '220px';
+    
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 
-  const ctx = canvas.getContext('2d');
-  if (chartInstances[ctxId]) chartInstances[ctxId].destroy();
-  
-  const gradientStart = 0.6;
-  const gradientEnd = 0.8;
-  
-  const gradient = ctx.createLinearGradient(
-    0, 
-    ctx.canvas.clientHeight * gradientStart, 
-    0, 
-    ctx.canvas.clientHeight * gradientEnd
-  );
-  
-  gradient.addColorStop(0, `${color}`);
-  gradient.addColorStop(0.5, `${color}66`);
-  gradient.addColorStop(1, `${color}00`);
+    const ctx = canvas.getContext('2d');
+    
+    const gradientStart = 0.6;
+    const gradientEnd = 0.8;
+    
+    const gradient = ctx.createLinearGradient(
+        0, 
+        ctx.canvas.clientHeight * gradientStart, 
+        0, 
+        ctx.canvas.clientHeight * gradientEnd
+    );
+    
+    gradient.addColorStop(0, `${color}`);
+    gradient.addColorStop(0.5, `${color}66`);
+    gradient.addColorStop(1, `${color}00`);
 
-  chartInstances[ctxId] = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        backgroundColor: gradient,
-        borderColor: color,
-        borderWidth: 1,
-        fill: {
-          target: 'origin',
-          above: gradient
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                data,
+                backgroundColor: gradient,
+                borderColor: color,
+                borderWidth: 1,
+                fill: {
+                    target: 'origin',
+                    above: gradient
+                },
+                pointBackgroundColor: '#fff',
+                tension: 0.4
+            }]
         },
-        pointBackgroundColor: '#fff',
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false, // Crucial para o controle de tamanho
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-        datalabels: {
-          anchor: 'end',
-          align: 'top',
-          offset: -2,
-          color: '#1676FF',
-          font: { size: 10 }
-        }
-      },
-      scales: {
-        y: {  
-          display: false,
-          beginAtZero: false,
-          grid: { display: false },
-          border: { display: false },
-          grace: '5%',
-          suggestedMax: Math.max(...data) * 1.1 
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    offset: -2,
+                    color: '#1676FF',
+                    font: { size: 10 }
+                }
+            },
+            scales: {
+                y: {  
+                    display: false,
+                    beginAtZero: false,
+                    grid: { display: false },
+                    border: { display: false },
+                    grace: '5%',
+                    suggestedMax: Math.max(...data) * 1.1 
+                },
+                x: { 
+                    ticks: { 
+                        display: true,
+                        color: '#5B6591',
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }, 
+                    grid: { display: false }, 
+                    border: { display: false } 
+                }
+            },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: 20
+                }
+            }
         },
-        x: { 
-          ticks: { 
-            display: true,
-            color: '#5B6591',
-            maxRotation: 0,
-            autoSkip: true,
-            maxTicksLimit: 10
-          }, 
-          grid: { display: false }, 
-          border: { display: false } 
-        }
-      },
-      // Ajuste para evitar vazamento
-      layout: {
-        padding: {
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 20
-        }
-      }
-    },
-    plugins: [ChartDataLabels]
-  });
-}
-
-//filtro dia, mes, ano
-function addChartSwitchListeners(baseId, dataKey, color) {
-  ['daily', 'weekly', 'monthly', 'yearly'].forEach(period => {
-    document.getElementById(`${period}${baseId}`)?.addEventListener('click', () => {
-      renderLineChart(`${baseId}Chart`, evolutionData.labels[period], evolutionData[dataKey][period], color);
+        plugins: [ChartDataLabels]
     });
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -355,6 +418,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalGoal = dashboardData.merchants.reduce((sum, m) => sum + m.monthlyGoal, 0);
   const totalAccomplished = dashboardData.merchants.reduce((sum, m) => sum + m.accomplished, 0);
   renderDoughnutChart('totalMerchantProgressChart', totalAccomplished, totalGoal);
+
+  chartInstances['allSubscribersChart'] = renderLineChart(
+        'allSubscribersChart', 
+        evolutionData.labels.monthly, 
+        evolutionData.all.monthly, 
+        '#1676FF'
+    );
+
+    initFilterMenus();
 
   renderLineChart('allSubscribersChart', evolutionData.labels.monthly, evolutionData.all.monthly, '#1676FF');
   renderLineChart('rMobileSubscribersChart', evolutionData.labels.monthly, evolutionData.rMobile.monthly, '#1676FF');
