@@ -4,15 +4,42 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Inter', sans-serif";
 
-document.addEventListener("DOMContentLoaded", function(){
-
+document.addEventListener("DOMContentLoaded", function() {
     const menuToggle = document.querySelector(".menu-toggle");
-    const nav = document.querySelector(".nav");
+    const nav = document.querySelector("nav");
+    const overlay = document.getElementById("nav-overlay");
 
-    menuToggle.addEventListener("click", function(){
-        nav.classList.toggle("active");
-        menuToggle.classList.toggle("active");
+    menuToggle.addEventListener("click", function() {
+        nav.classList.toggle("-translate-x-full");
+        nav.classList.toggle("translate-x-0");
+        overlay.classList.toggle("hidden");
+        this.classList.toggle("active");
     });
+
+    overlay.addEventListener("click", function() {
+        nav.classList.add("-translate-x-full");
+        nav.classList.remove("translate-x-0");
+        overlay.classList.add("hidden");
+        menuToggle.classList.remove("active");
+    });
+
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  const lastVisitElement = document.getElementById("lastVisit");
+  const now = new Date();
+  const options = { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric',
+    hour: '2-digit', 
+    minute: '2-digit'
+  };
+  
+  const formattedDate = now.toLocaleDateString('en-US', options);
+  
+  lastVisitElement.textContent = `Here is what have changed since your last visit at ${formattedDate}`;
+  
 });
 
 const dashboardData = {
@@ -130,11 +157,11 @@ function updateChartWithPeriod(chartId, dataKey, period){
 }
 
 function updateStatCards() {
-  const statCards = document.querySelectorAll(".grid-cols-4 > div");
-  statCards[0].querySelector("p").textContent = `${formatNumber(dashboardData.subscriptions.deo + dashboardData.subscriptions.morgan)}`;
-  statCards[1].querySelector("p").textContent = dashboardData.payments;
-  statCards[2].querySelector("p").textContent = `${formatNumber(dashboardData.services.approved)}`;
-  statCards[3].querySelector("p").textContent = `${formatNumber(dashboardData.products.approved)}`;
+  const statCards = document.querySelectorAll("#chart");
+  statCards[0].textContent = `${formatNumber(dashboardData.subscriptions.deo + dashboardData.subscriptions.morgan)}`;
+  statCards[1].textContent = dashboardData.payments;
+  statCards[2].textContent = `${formatNumber(dashboardData.services.approved)}`;
+  statCards[3].textContent = `${formatNumber(dashboardData.products.approved)}`;
 
   const totalGoal = dashboardData.merchants.reduce((sum, m) => sum + m.monthlyGoal, 0);
   const totalAccomplished = dashboardData.merchants.reduce((sum, m)=> sum + m.accomplished, 0);
@@ -258,14 +285,12 @@ const centerPercentagePlugin = {
 
     ctx.save();
 
-    // percentage
     ctx.font = '20px sans-serif';
     ctx.fillStyle = '#181E51';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(percentageText, centerX, centerY - 10);
 
-    // completed
     ctx.font = '12px sans-serif';
     ctx.fillStyle = '#5B6591';
     ctx.textAlign = 'center';
@@ -306,7 +331,7 @@ function renderDoughnutChart(ctxId, accomplished, goal) {
       }]
     },
     options: {
-      responsive: false, // Alterado para false para controle absoluto
+      responsive: true,
       maintainAspectRatio: false,
       cutout: '95%',
       plugins: {
