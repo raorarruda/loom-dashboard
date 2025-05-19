@@ -12,63 +12,73 @@
 </head>
 <body class="bg-brand-50">
     <header class="bg-brand-500 flex items-center justify-between px-9">
+        <button class="lg:hidden menu-toggle flex flex-col justify-center items-center w-8 h-8" aria-label="Open menu">
+            <span class="block w-6 h-0.5 bg-white mb-1.5 transition-all duration-300 transform 
+                [.active>&:nth-child(1)]:translate-y-2 [.active>&:nth-child(1)]:rotate-45"></span>
+            <span class="block w-6 h-0.5 bg-white mb-1.5 transition-all duration-300 
+                [.active>&:nth-child(2)]:opacity-0"></span>
+            <span class="block w-6 h-0.5 bg-white transition-all duration-300 transform 
+                [.active>&:nth-child(3)]:-translate-y-2 [.active>&:nth-child(3)]:-rotate-45"></span>
+        </button>
         <div>
             <a href="index.html">
                 <img src="images/logo-loom-white.svg" alt="LOOM. White Logo"></a>
         </div>
         <div class="flex items-center gap-6">
-            <div class="border-x p-6">
-                <a href="#">
+            <div>
+                <a href="index.html">
                     <img src="images/notification.svg" alt="Notification Icon" class="cursor-pointer">
                 </a>
             </div>       
-            <div class="flex gap-2 items-center">
-                <img src="images/pic.svg" alt="User Profile Picture">
+            <div class="flex gap-2 items-center p-2">
                 <div>
-                    <p class="font-inter text-sm text-brand-50">Karima Abd El-Hamid</p>
+                    <a href="index.html">
+                        <img src="images/pic.svg" alt="User Profile Picture" class="w-8 h-8">
+                    </a>                        
+                </div>                
+                <div>
+                    <p class="font-inter text-xs text-brand-50">Karima Abd El-Hamid</p>
                     <p class="font-inter font-bold text-xs text-brand-50">Admin</p>
                 </div>
-            </div>
-            <a href="#" class="cursor-pointer pl-2"><img src="images/sort-down.svg" alt="Sort Down Icon">
-            </a>
+            </div>            
         </div>
     </header>
         <div class="grid grid-cols-[auto_1fr]">
-            <nav class="bg-white flex flex-grow h-dvh size-fit shadow-xl">
-                <ul class="flex flex-col px-9 text-neutral-950">
+            <nav class="nav fixed lg:static inset-0 lg:inset-auto bg-white flex flex-grow h-full size-fit shadow-xl transform lg:transform-none -translate-x-full lg:translate-x-0 ">
+                <ul class="flex flex-col px-9 gap-10 text-neutral-950">
                     <li>
-                        <a class="flex gap-4 pt-10 pb-5 font-bold">
+                        <a href="index.html" class="flex gap-4 font-bold mt-10">
                             <img src="images/icon-sidebar-dashboard.svg" alt="Dashboard Icon">Dashboard</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 py-5">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-teams.svg" alt="Teams Icon">Teams</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 py-5">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-customers.svg" alt="Customers Icon">Customers</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 py-5">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-merchants.svg" alt="Merchants Icon">Merchants</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 py-5">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-content.svg" alt="Content Icon">Content</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 py-5">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-campaigns.svg" alt="Campaigns Icon">Campaigns</a>
                     </li>
                     <li>
-                        <a class="flex gap-4 pt-5 pb-10">
+                        <a href="index.html" class="flex gap-4">
                             <img src="images/icon-sidebar-actionlog.svg" alt="Action Log Icon">Action Log</a>
                     </li>
                 </ul>
             </nav>
             <div class="flex flex-col gap-10 px-14 pt-7">
                 <section class="flex flex-col gap-8 text-neutral-950">
-                    <div>
+                    <div>                        
                         <p class="font-bold text-4xl pb-2">Dashboard</p>
                         <p class="text-sm text-neutral-600">Here is what have changed since your last visit at 12 Novenber 2018 - 12:00 PM</p>
                     </div>
@@ -100,26 +110,52 @@
                                 <div class="flex justify-between items-center mb-4">
                                     <p class="text-lg font-medium">All Subscribers</p>
                                     <div class="relative">
-                                        <button class="filter-toggle p-1 rounded hover:bg-gray-100" data-chart="allSubscribersChart">
+                                        <button class="filter-toggle p-1 rounded transition-all duration-200" data-chart="allSubscribersChart">
                                             <img src="images/menuFilter.svg" alt="Filter menu" class="w-5 h-5">
                                         </button>
-                                        <div class="filter-menu absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50 border border-gray-200 hidden">
-                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="daily">Daily</button>
-                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="weekly">Weekly</button>
-                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="monthly">Monthly</button>
-                                            <button class="filter-option block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" data-period="yearly">Yearly</button>
+                                        <div class="filter-menu absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-50 border hidden">
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="daily">Daily</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="weekly">Weekly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="monthly">Monthly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200" data-period="yearly">Yearly</button>
                                         </div>
                                     </div>
                                 </div>
                                 <canvas id="allSubscribersChart" class="w-full h-[300px]"></canvas>
                             </div>
-                            <div class="bg-white p-6 rounded-lg shadow-lg">
-                                <p class="text-lg font-medium">R-Mobile Subscribers</p>
-                                <canvas id="rMobileSubscribersChart"></canvas>
+                            <div class="bg-white p-6 rounded-lg shadow-lg relative">
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-lg font-medium">R-Mobile Subscribers</p>
+                                    <div class="relative">
+                                        <button class="filter-toggle p-1 rounded transition-all duration-200" data-chart="rMobileSubscribersChart">
+                                            <img src="images/menuFilter.svg" alt="Filter menu" class="w-5 h-5">
+                                        </button>
+                                        <div class="filter-menu absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-50 border hidden">
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="daily">Daily</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="weekly">Weekly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="monthly">Monthly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200" data-period="yearly">Yearly</button>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <canvas id="rMobileSubscribersChart" class="w-full h-[300px]"></canvas>
                             </div>
-                            <div class="bg-white p-6 rounded-lg shadow-lg">
-                                <p class="text-lg font-medium">Morgan Subscribers</p>
-                                <canvas id="morganSubscribersChart"></canvas>
+                            <div class="bg-white p-6 rounded-lg shadow-lg relative">
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-lg font-medium">Morgan Subscribers</p>
+                                    <div class="relative">
+                                        <button class="filter-toggle p-1 rounded transition-all duration-200" data-chart="morganSubscribersChart">
+                                            <img src="images/menuFilter.svg" alt="Filter menu" class="w-5 h-5">
+                                        </button>
+                                        <div class="filter-menu absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-50 border hidden">
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="daily">Daily</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="weekly">Weekly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200 border-b border-neutral-200" data-period="monthly">Monthly</button>
+                                            <button class="filter-option block w-full text-center text-neutral-700 px-4 py-2 text-sm hover:font-bold hover:text-brand-500 transition-all duration-200" data-period="yearly">Yearly</button>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <canvas id="morganSubscribersChart" class="w-full h-[300px]"></canvas>
                             </div>
                         </div>
                 </section>

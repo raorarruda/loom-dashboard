@@ -49,5 +49,13 @@ module.exports = {
     }
   },
   plugins: [],
+
+  variants: {
+      extend: {
+        fontWeight: ['hover', 'focus'], // Habilita hover para font-bold
+        textColor: ['hover', 'focus'], // Habilita hover para text-color
+        backgroundColor: ['hover', 'focus'], // Habilita hover para bg-color
+      },
+    },
 }
 

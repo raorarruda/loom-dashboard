@@ -4,6 +4,17 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Inter', sans-serif";
 
+document.addEventListener("DOMContentLoaded", function(){
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector(".nav");
+
+    menuToggle.addEventListener("click", function(){
+        nav.classList.toggle("active");
+        menuToggle.classList.toggle("active");
+    });
+});
+
 const dashboardData = {
   subscriptions: { deo: 150, morgan: 85 },
   payments: "40M",
@@ -78,6 +89,8 @@ function initFilterMenus(){
   });
 
   setupChartFilter("allSubscribersChart", "all");
+  setupChartFilter("rMobileSubscribersChart", "rMobile");
+  setupChartFilter("morganSubscribersChart", "morgan");
 }
 
 function setupChartFilter(chartId, dataKey){
@@ -97,11 +110,11 @@ function setupChartFilter(chartId, dataKey){
 }
 
 function updateActiveFilterStyle(selectedOption){
-  selectedOption.closest(".filter-menu").querySelectorAll(".filter-option").forEach(opt =>{
-    opt.classList.remove("bg-gray-100', 'font-medium");
+  selectedOption.closest(".filter-menu").querySelectorAll(".filter-option").forEach(opt => {
+    opt.classList.remove("bg-gray-100", "font-medium");
   });
 
-  selectedOption.classList.add("bg-gray-100', 'font-medium");
+  selectedOption.classList.add("bg-gray-100", "font-medium");
 }
 
 function updateChartWithPeriod(chartId, dataKey, period){
@@ -331,7 +344,7 @@ function renderLineChart(ctxId, labels, data, color) {
 
     const ctx = canvas.getContext('2d');
     
-    const gradientStart = 0.6;
+    const gradientStart = 0.4;
     const gradientEnd = 0.8;
     
     const gradient = ctx.createLinearGradient(
@@ -401,8 +414,8 @@ function renderLineChart(ctxId, labels, data, color) {
                 padding: {
                     left: 10,
                     right: 10,
-                    top: 10,
-                    bottom: 20
+                    top: 0,
+                    bottom: 32
                 }
             }
         },
@@ -426,11 +439,21 @@ document.addEventListener("DOMContentLoaded", () => {
         '#1676FF'
     );
 
-    initFilterMenus();
+  chartInstances['rMobileSubscribersChart'] = renderLineChart(
+    'rMobileSubscribersChart', 
+    evolutionData.labels.monthly, 
+    evolutionData.rMobile.monthly, 
+    '#1676FF'
+  );
 
-  renderLineChart('allSubscribersChart', evolutionData.labels.monthly, evolutionData.all.monthly, '#1676FF');
-  renderLineChart('rMobileSubscribersChart', evolutionData.labels.monthly, evolutionData.rMobile.monthly, '#1676FF');
-  renderLineChart('morganSubscribersChart', evolutionData.labels.monthly, evolutionData.morgan.monthly, '#1676FF');
+  chartInstances['morganSubscribersChart'] = renderLineChart(
+    'morganSubscribersChart', 
+    evolutionData.labels.monthly, 
+    evolutionData.morgan.monthly, 
+    '#1676FF'
+  );
+
+    initFilterMenus();
 
   addChartSwitchListeners('Subscribers', 'all', '#1676FF');
   addChartSwitchListeners('RMobile', 'rMobile', '#1676FF');
